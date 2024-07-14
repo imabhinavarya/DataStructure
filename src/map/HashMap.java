@@ -7,4 +7,8 @@ class MapNode<K,V>{
 }
 
 public class HashMap   {
+
+    public static void main(String[] args) {
+
+    }
 }
