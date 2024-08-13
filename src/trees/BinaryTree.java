@@ -1,8 +1,17 @@
 package trees;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
+import java.util.*;
+
+//Pair class for top and bottom view
+class Pair{
+    int hd;
+    BinaryTreeNode root;
+
+    public Pair(int hd, BinaryTreeNode root) {
+        this.hd = hd;
+        this.root = root;
+    }
+}
 
 class BinaryTreeNode{
     int data;
@@ -15,6 +24,62 @@ class BinaryTreeNode{
 }
 
 public class BinaryTree {
+    /////////////////// TOP VIEW //////////////////////////
+    public static void topView(BinaryTreeNode root){
+        if(root==null) return;
+        Map<Integer,Integer> map = new HashMap<>();
+        Queue<Pair> q = new LinkedList<>();
+        q.add(new Pair(0, root));
+
+        while(!q.isEmpty()){
+            Pair p = q.poll();
+            int hd = p.hd;
+            BinaryTreeNode fnode = p.root;
+
+            if(!map.containsKey(hd)){
+                map.put(hd,fnode.data);
+            }
+            if(fnode.left!=null){
+                q.add(new Pair(hd-1, fnode.left));
+            }
+            if(fnode.right!=null){
+                q.add(new Pair(hd+1, fnode.right));
+            }
+        }
+        for(Map.Entry<Integer,Integer> entry : map.entrySet()){
+            System.out.print(entry.getValue()+" ");
+        }
+        System.out.println();
+    }
+    ///////////////////////////////////////////////////////
+
+    /////////////////// BOTTOM VIEW ///////////////////////
+    public static void bottomView(BinaryTreeNode root){
+        if (root == null) {
+            return;
+        }
+        Map<Integer,Integer> map = new HashMap<>();
+        Queue<Pair> q = new LinkedList<>();
+        q.add(new Pair(0, root));
+        while (!q.isEmpty()){
+            Pair p = q.poll();
+            int hd = p.hd;
+            BinaryTreeNode fnode = p.root;
+            map.put(hd, fnode.data);
+            if(fnode.left!=null){
+                q.add(new Pair(hd-1,fnode.left));
+            }
+            if(fnode.right!=null){
+                q.add(new Pair(hd-1,fnode.right));
+            }
+        }
+        for(Map.Entry<Integer,Integer> entry : map.entrySet()){
+            System.out.print(entry.getValue()+" ");
+        }
+        System.out.println();
+    }
+    ///////////////////////////////////////////////////////
+
     public static BinaryTreeNode inputLevel(){
         System.out.println("Enter root data ");
         Scanner sc = new Scanner(System.in);
@@ -201,24 +266,38 @@ public class BinaryTree {
 
 
     public static void main(String[] args) {
-        BinaryTreeNode root = inputLevel();
-        printLevel(root);
-        System.out.println("=============================");
-        System.out.println(countNodes(root));
 
-        System.out.println("=============================");
-        preOrder(root);
-        System.out.println("=============================");
-        inOrder(root);
-        System.out.println("=============================");
-        postOrder(root);
+        BinaryTreeNode root = new BinaryTreeNode(1);
+        root.left = new BinaryTreeNode(2);
+        root.right = new BinaryTreeNode(3);
+        root.left.left = new BinaryTreeNode(4);
+        root.left.right = new BinaryTreeNode(5);
+        root.right.left = new BinaryTreeNode(6);
+        root.right.right = new BinaryTreeNode(7);
 
-        int[] pre={1,2,3,4,15,5,6,7,8,10,9,12};
-        int[] in={4,15,3,2,5,1,6,10,8,7,9,12};
-        BinaryTreeNode r=preInTreeConstruct(pre,in);
-        printLevel(r);
-        System.out.println("==================");
-        BinaryTreeNode ro=mirror(root);
-        printLevel(ro);
+        System.out.println("Top view of the binary tree:");
+        topView(root);
+
+        System.out.println("Bottom view of the binary tree:");
+        bottomView(root);
+//        BinaryTreeNode root = inputLevel();
+//        printLevel(root);
+//        System.out.println("=============================");
+//        System.out.println(countNodes(root));
+//
+//        System.out.println("=============================");
+//        preOrder(root);
+//        System.out.println("=============================");
+//        inOrder(root);
+//        System.out.println("=============================");
+//        postOrder(root);
+//
+//        int[] pre={1,2,3,4,15,5,6,7,8,10,9,12};
+//        int[] in={4,15,3,2,5,1,6,10,8,7,9,12};
+//        BinaryTreeNode r=preInTreeConstruct(pre,in);
+//        printLevel(r);
+//        System.out.println("==================");
+//        BinaryTreeNode ro=mirror(root);
+//        printLevel(ro);
     }
 }
